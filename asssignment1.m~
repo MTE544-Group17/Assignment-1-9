@@ -3,9 +3,9 @@ clear all;
 
 %% Define inputs
 % Wheel rotation rates
-w = [0 -5 5]; 
+w = [1 -]; 
 
-% w = w /10;
+w = w /10;
 
 %% Define states
 % Position of the robot
@@ -22,4 +22,4 @@ for i = 1:150
 end
 
 plot(x_history(:, 1), x_history(:, 2));
-axis([-5 5 -10 10]);
+axis([-5 5 -5 5]);
