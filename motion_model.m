@@ -55,8 +55,8 @@ function x_new = motion_model(x, w)
     % calculate the global changes
     x_new = [0 0 0];
     
-    x_new(1) = x(1) + trans_local(1) * cosd(x(3)) + trans_local(2) * cosd(90 + x(3)) + randn(1) * 0.01;
-    x_new(2) = x(2) + trans_local(1) * sind(x(3)) + trans_local(2) * sind(90 + x(3)) + randn(1) * 0.01;
+    x_new(1) = x(1) + trans_local(1) * cos(x(3)) + trans_local(2) * cos(pi/2 + x(3)) + randn(1) * 0.01;
+    x_new(2) = x(2) + trans_local(1) * sin(x(3)) + trans_local(2) * sin(pi/2 + x(3)) + randn(1) * 0.01;
     x_new(3) = x(3) + ang_disp_local + randn(1) * 0.1/180*pi;
 end
 
