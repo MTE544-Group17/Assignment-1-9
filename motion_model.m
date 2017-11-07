@@ -15,9 +15,9 @@ function x_new = motion_model(x, u)
 
     x_new = x + K*J*u;
 
-    if(x_new(3) > 2*pi)
-        x_new(3) = x_new(3) - 2 * pi;
-    elseif(x_new(3) < 0)
-        x_new(3) = x_new(3) + 2 * pi;
-    end
+%     if(x_new(3) > 2*pi)
+%         x_new(3) = x_new(3) - 2 * pi;
+%     elseif(x_new(3) < 0)
+%         x_new(3) = x_new(3) + 2 * pi;
+%     end
 end
