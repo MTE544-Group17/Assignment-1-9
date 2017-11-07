@@ -34,7 +34,7 @@ H = [1 0 0;
 
 %% Question 4: Extended Kalman Filter
 dt = 0.1;
-Tf = 15;
+Tf = 40;
 T = 0:dt:Tf;
 
 R = [0.01 0 0; 0 0.01 0; 0 0 0.1*pi/180] .^2;
@@ -43,8 +43,8 @@ Q = [0.5 0 0; 0 0.5 0; 0 0 10/180*pi] .^2;
 x = [1; 1; pi/2];
 u = [-1.5; 2; 1];
 
-mup = [1; 1; pi/2];
-mu = [1; 2; 0.5];
+mup = [1; 1; 1];
+mu = [1; 1; 1];
 
 S = 1*eye(3);
 
@@ -55,12 +55,14 @@ for t = 1 : length(T)
     u(2) = u(2) - 0.01;
     u(3) = -u(2);
     % Calculate error and disturbance
-    e = [randn(1) 0 0; 0 randn(1) 0; 0 0 randn(1)] * (sqrt(R) * [1; 1; 1]);
-    d = [randn(1) 0 0; 0 randn(1) 0; 0 0 randn(1)] * (sqrt(Q) * [1; 1; 1]);
+%     e = [randn(1);randn(1);randn(1)] * (sqrt(R) * [1; 1; 1]);
+    e = normrnd(0,[R(1,1);R(2,2);R(3,3)]);
+%     d = [randn(1);randn(1);randn(1)] * (sqrt(Q) * [1; 1; 1]);
+    d = normrnd(0,[Q(1,1);Q(2,2);Q(3,3)]);
     
     % Calculate motion model and measurement model measurement
     x = motion_model(x, u) + e;
-    y = [x(1); x(2); x(3)-99.7/180*pi] + d;
+    y = [x(1); x(2); x(3)-9.7/180*pi] + d;
     
     
     %%% Kalman Filter Prediction
@@ -82,15 +84,17 @@ for t = 1 : length(T)
     
     %%% Measurement update
     % Linearized measurement model at the predicted mean
-    H_t = [mup(1) 0 0;
-           0 mup(2) 0;
-           0 0 mup(3)];
+%     H_t = [mup(1) 0 0;
+%            0 mup(2) 0;
+%            0 0 mup(3)];
+       
+    H_t = eye(3);
     
     % Compute Kalman gain
-    Kg = Sp*H_t'*inv(H_t*Sp*H_t'+Q);
+    Kg = Sp*H_t'*inv(H_t*Sp*H_t' + Q);
     
     % Update mean using the nonlinear measurement model
-    mu = mup + Kg*(y-[mup(1); mup(2); mup(3)-99.7/180*pi]);
+    mu = mup + Kg*(y-[mup(1); mup(2); mup(3)-9.7/180*pi]);
     
     % Update the covariance based on the measurement model
     S = (eye(length(mu))-Kg*H_t)*Sp;
