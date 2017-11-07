@@ -33,8 +33,18 @@ H = [1 0 0;
     0 0 1];
 
 %% Question 4: Extended Kalman Filter
+
+% Create AVI object
+makemovie = 1;
+if(makemovie)
+    vidObj = VideoWriter('ekf.avi');
+    vidObj.Quality = 100;
+    vidObj.FrameRate = 8;
+    open(vidObj);
+end
+
 dt = 0.1;
-Tf = 15;
+Tf = 10;
 T = 0:dt:Tf;
 
 R = [0.01 0 0; 0 0.01 0; 0 0 0.1*pi/180] .^2;
@@ -43,13 +53,14 @@ Q = [0.5 0 0; 0 0.5 0; 0 0 10/180*pi] .^2;
 x = [1; 1; pi/2];
 u = [-1.5; 2; 1];
 
-mup = [1; 1; 1];
-mu = [1; 1; 1];
+mup = [5; 5; 1];
+mu = [5; 5; 1];
 
 S = 1*eye(3);
 
 x_history = zeros(3, length(T));
-mu_history = zeros(3, length(T));
+mup_S = zeros(3, length(T));
+mu_S = zeros(3, length(T));
 
 for t = 1 : length(T)
     % Calculate error and disturbance
@@ -97,13 +108,27 @@ for t = 1 : length(T)
     % Update the covariance based on the measurement model
     S = (eye(length(mu))-Kg*H_t)*Sp;
     
-    mu_history(:,t) = mu;
     x_history(:,t) = x;
+    
+    % Store results
+    mup_S(:,t) = mup;
+    mu_S(:,t) = mu;
+%     K_S(:,t) = Kg;
+
+    % Plot results
+    figure(1);clf; hold on;
+    plot(0,0,'bx', 'MarkerSize', 6, 'LineWidth', 2)
+    plot([20 -1], [0 0],'b--')
+    plot(x_history(1, 2:t), x_history(2, 2:t), 'ro--')
+    mu_pos = [mu(1) mu(2)];
+    plot(mu_S(1,2:t), mu_S(2,2:t), 'bx--')
+    S_pos = [S(1,1) S(1,2); S(2,1) S(2,2)];
+    error_ellipse(S_pos, mu_pos, 0.75);
+    error_ellipse(S_pos, mu_pos, 0.95);
+    title('True state and belief')
+    axis equal
+    axis([-1 4 -3 3])
+    if (makemovie) writeVideo(vidObj, getframe(gca)); end
+
 end
-
-figure
-plot(x_history(1, :), x_history(2, :));
-hold on
-plot(mu_history(1, :), mu_history(2, :));
-axis([-1 4 -2 2]);
-
+if (makemovie) close(vidObj); end
