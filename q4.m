@@ -34,7 +34,7 @@ H = [1 0 0;
 
 %% Question 4: Extended Kalman Filter
 dt = 0.1;
-Tf = 40;
+Tf = 15;
 T = 0:dt:Tf;
 
 R = [0.01 0 0; 0 0.01 0; 0 0 0.1*pi/180] .^2;
@@ -52,8 +52,6 @@ x_history = zeros(3, length(T));
 mu_history = zeros(3, length(T));
 
 for t = 1 : length(T)
-    u(2) = u(2) - 0.01;
-    u(3) = -u(2);
     % Calculate error and disturbance
 %     e = [randn(1);randn(1);randn(1)] * (sqrt(R) * [1; 1; 1]);
     e = normrnd(0,[R(1,1);R(2,2);R(3,3)]);
