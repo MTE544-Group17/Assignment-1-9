@@ -5,12 +5,12 @@ function x_new = motion_model(x, u)
     sample_time = 0.1; % time between samples [s]
     
     %% Math    
-    J = [-1/3  cosd(60)/3 cosd(60)/3;
-            0 sind(-60)/2 sind(60)/2;
-      1/(3*l)     1/(3*l)     1/(3*l)] .* (sample_time * r);
+    J = [0  -(sqrt(3)/3) sqrt(3)/3;
+         2/3 -1/2 -1/2;
+         1/(3*l)   1/(3*l)   1/(3*l)] .* (sample_time * r);
     
-    K = [cos(x(3)) cos(x(3) + pi/2) 0;
-         sin(x(3)) sin(x(3) + pi/2) 0;
+    K = [cos(x(3)) -sin(x(3)) 0;
+         sin(x(3)) cos(x(3)) 0;
                  0        0         1];
 
     x_new = x + K*J*u;

@@ -8,12 +8,12 @@ close all
     
     syms x1 x2 x3 u1 u2 u3;
     
-    j = [-1/3  cosd(60)/3 cosd(60)/3;
-            0 sind(-60)/2 sind(60)/2;
-      1/(3*l)     1/(3*l)     1/(3*l)] .* (sample_time * r);
+    j = [0  -(sqrt(3)/3) sqrt(3)/3;
+         2/3 -1/2 -1/2;
+         1/(3*l)   1/(3*l)   1/(3*l)] .* (sample_time * r);
   
-    k = [cos(x3) cos(x3 + pi/2) 0;
-         sin(x3) sin(x3 + pi/2) 0;
+    k = [cos(x3) -sin(x3) 0;
+         sin(x3) cos(x3) 0;
             0        0         1];
         
     g = [x1; x2; x3] + k*j*[u1; u2; u3];
@@ -76,7 +76,7 @@ for t = 1 : length(T)
     
     % Compute Kalman gain
     H_t = eye(3);
-    Kg = Sp*H_t'*inv(H_t*Sp*H_t' + Q);
+    Kg = Sp*H_t'*inv(H_t*Sp*H_t' + Q)
     
     % Update mean using the nonlinear measurement model
     mu = mup + Kg*(y-[mup(1); mup(2); mup(3)-9.7/180*pi]);
@@ -97,12 +97,12 @@ for t = 1 : length(T)
     plot(x_history(1, 2:t), x_history(2, 2:t), 'ro--')
     mu_pos = [mu(1) mu(2)];
     plot(mu_S(1,2:t), mu_S(2,2:t), 'bx--')
-    S_pos = [S(1,1) S(1,2); S(2,1) S(2,2)];
+    S_pos = [S(1,1) S(2,1); S(1,2) S(2,2)];
     error_ellipse(S_pos, mu_pos, 0.75);
     error_ellipse(S_pos, mu_pos, 0.95);
     title('True state and belief')
     axis equal
-    axis([-1 2 0 3])
+    axis([-1 4 0 5])
     if (makemovie) writeVideo(vidObj, getframe(gca)); end
 
 end

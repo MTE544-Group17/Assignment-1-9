@@ -20,7 +20,7 @@ plot(x_history(1, :) , x_history(2, :));
 title('Test run');
 axis([-2 2 -2 2]);
 
-%% Straigt line
+%% Straight line
 w = [0; -2; 2]; 
 
 x = [0; 0; 0];
