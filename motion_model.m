@@ -12,7 +12,7 @@ function x_new = motion_model(x, u)
     K = [cos(x(3)) -sin(x(3)) 0;
          sin(x(3)) cos(x(3)) 0;
                  0        0         1];
-
+    
     x_new = x + K*J*u;
 
 %     if(x_new(3) > 2*pi)
