@@ -21,7 +21,6 @@ i = 1;
 
 for t=0:dt:20
     delta = deg2rad(10 - t);
-%     delta = -0.1;
     x = bicycle(x, v, delta, L, dt);
     
     x_history(:, i) = x;

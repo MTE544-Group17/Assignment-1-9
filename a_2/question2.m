@@ -36,7 +36,7 @@ for t=0:dt:20
     end
     
     if r == 0
-        break
+        break;
     end
     
     direction_vec = [set_path(1, target_index) - x(1); set_path(2, target_index) - x(2)];
