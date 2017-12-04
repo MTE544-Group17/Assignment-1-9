@@ -10,7 +10,7 @@ startpos = [40; 5; pi];
 
 L = 0.3;
 dt = 0.1;
-r = 3;
+r = 2;
 gain = 0.5;
 
 x = [40; 5; pi];
@@ -29,7 +29,8 @@ prm.ConnectionDistance = 20;
 path = findpath(prm, [x(1) x(2)], searchgoal);
 show(prm, 'Path', 'on');
 
-path = interpolate(path)';
+% path = interpolate(path)';
+path = path';
 
 % Create AVI object
 makemovie = 1;
@@ -72,6 +73,10 @@ for t=0:dt:2000000
     colormap('gray');
     imagesc(1-flipud(map));
     axis([0 926 0 716]);
+    title('Path Traced - No interpolation');
+    xlabel('Distance in X [decimeters]');
+    ylabel('Distance in Y [decimeters]');
+
     plot(path(1, :)*10, path(2, :)*10, 'bx-', 'MarkerSize',0.5, 'LineWidth', 0.2);
     plot(x_history(1, 1:i-1)*10, x_history(2, 1:i-1)*10, 'ro--', 'MarkerSize',2, 'LineWidth', 1);
     

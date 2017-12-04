@@ -1,6 +1,6 @@
 function path = interpolate( path_low_res )
 
-    point_dist = 1.5;
+    point_dist = 3;
 
     path = path_low_res(1, :);
     for i = 1:length(path_low_res)-1
